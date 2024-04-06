@@ -4,7 +4,7 @@ import os
 
 os.write(1,b'Loading LLM.\n')
 
-llm = Ollama(model="phi", base_url="http://0.0.0.0:11434", verbose=True)
+llm = Ollama(model="phi", base_url="http://model:11434", verbose=True)
 
 os.write(1,b'FINISHED (Loading LLM).\n')
 
