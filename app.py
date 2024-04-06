@@ -15,10 +15,10 @@ def sendPrompt(prompt):
 
 
 
-st.title("Chat with Ollama")
+st.title("Chatbot")
 if "messages" not in st.session_state.keys(): 
     st.session_state.messages = [
-        {"role": "assistant", "content": "Ask me a question !"}
+        {"role": "assistant", "content": "Hi, I am here to answer your questions."}
     ]
 
 if prompt := st.chat_input("Your question"): 
@@ -35,4 +35,4 @@ if st.session_state.messages[-1]["role"] != "assistant":
             print(response)
             st.write(response)
             message = {"role": "assistant", "content": response}
-            st.session_state.messages.append(message) 
+            st.session_state.messages.append(message)

@@ -28,3 +28,8 @@ You can find the chatbot here: [http://localhost:8501](http://localhost:8501)
 
 ## Various non essential information
 For testing (for example other models) you can communicate directly with the Ollama API via [http://localhost:11434](http://localhost:11434) in the way described here: [Ollama API documentation](https://github.com/ollama/ollama/blob/main/docs/api.md)
+
+
+# TODO Thomas
+
+- skriv ut freeze versionerna
