@@ -32,13 +32,13 @@ docker build . -t application
 docker-compose up --detach
 ```
 
-5. Download and set up a model of your choice (that your hardware can handle). In this example the model is named "phi". You can find other models [here](https://ollama.com/library).
+5. Download and set up a model of your choice (that your hardware can handle). In this example the model is named **phi**. You can find other models [here](https://ollama.com/library).
 
 ```
-docker exec -it model-container ollama run phi
+docker exec model-container ollama run phi
 ```
 
-## How to use
+## How to use the chatbot  <span id="HowToUse"><span>
 
 You can find the chatbot here: [http://localhost:8501](http://localhost:8501)
 
@@ -50,8 +50,11 @@ To make changes to the code and start the servers with the new changes applied:
 3. Make your code changes
 4. ```docker build . -t application```
 5. ```docker-compose up --detach```
+6. See [How to use](#HowToUse)
+7. If you are happy with your changes and want to share to the group, commit and push: ```git commit -am "<description of you code changes>"; git push --set-upstream origin <what you called your branch>```
+8. When pushing further code you can omit ```--set-upstream origin <what you called your branch>``` from the command above
 
-## Various non essential information
+## Various non-essential information
 For various experimentation you can communicate directly with the Ollama API via [http://localhost:11434](http://localhost:11434) in the way described here: [Ollama API documentation](https://github.com/ollama/ollama/blob/main/docs/api.md)
 
 For more info about the server setup, see docker-compose.yml file.

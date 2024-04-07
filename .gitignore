@@ -1,5 +1,4 @@
 ca.crt
-docker/ca.crt
 data/
 env/
 
