@@ -16,21 +16,23 @@ This project has 3 parts:
 
 ## How to start
 
-1. Download and start [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+1. Clone this repo: ```git clone git@github.com:ttechstuff/group2-ML-app-v1.git; cd group2-ML-app-v1```
 
-2. Build the application image.
+2. Download and start [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+
+3. Build the application image.
 
 ```
 docker build . -t application
 ```
 
-3. Start the servers.
+4. Start the servers.
 
 ```
 docker-compose up --detach
 ```
 
-4. Download and set up a model of your choice (that your hardware can handle). In this example the model is named "phi". You can find other models [here](https://ollama.com/library).
+5. Download and set up a model of your choice (that your hardware can handle). In this example the model is named "phi". You can find other models [here](https://ollama.com/library).
 
 ```
 docker exec -it model-container ollama run phi
@@ -44,9 +46,10 @@ You can find the chatbot here: [http://localhost:8501](http://localhost:8501)
 
 To make changes to the code and start the servers with the new changes applied:
 1. ```docker compose down```
-2. Make your code changes
-3. ```docker build . -t application```
-4. ```docker-compose up --detach```
+2. Check out a feature branch: ```git checkout -b <what you want to call your branch>```
+3. Make your code changes
+4. ```docker build . -t application```
+5. ```docker-compose up --detach```
 
 ## Various non essential information
 For various experimentation you can communicate directly with the Ollama API via [http://localhost:11434](http://localhost:11434) in the way described here: [Ollama API documentation](https://github.com/ollama/ollama/blob/main/docs/api.md)
