@@ -2,17 +2,23 @@ version: '1'
 services:
   model:
     container_name: model-container
-    image: ollama/ollama
+    image: tgi
     volumes:
-      - ./data/ollama:/root/.ollama
+      - ./data:/data
     ports:
-      - 11434:11434
+      - 80:80
     environment:
-      - OLLAMA_MODELS=./data/ollama/models
+      # - HUGGINGFACE_OFFLINE=1
+      - HUGGINGFACE_TOKEN=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
+    shm_size: '1gb'
+    command: ["--model-id", "bigscience/mt0-small", "--disable-custom-kernels", "--trust-remote-code"]
   application:
     container_name: application-container
     image: application
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
     ports:
-      - 8501:8501
-
-
+      - 7860:7860
+  
+volumes:
+  data:

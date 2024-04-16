@@ -1,8 +1,8 @@
 # Test-APP - Group 2 ML @ BTH 
 
 This project has 3 parts:
-1. A container that serves the ML model. The container is created automatically from the publicly available ```ollama/ollama``` image.
-2. ```app.py```: Code for an streamlit application that provides a chatbot frontend for chatting with the ML model. This application is served in a separate container.
+1. A container that serves the ML model. The container is created automatically from the publicly available ```xxxxxxxx``` image.
+2. ```app.py```: Code for an gradio application that provides a chatbot frontend for chatting with the ML model. This application is served in a separate container.
 3. ```rag-engine.py```: This code is a potential start for implementing RAG using the pdf documents in the ```documents``` folder. This code is as of now NOT used by the application, but can be tested by running the following commands outside of Docker:
 
     ```
@@ -13,6 +13,8 @@ This project has 3 parts:
     python rag-engine.py
     ```
 
+
+______ You need to provide a huggingface-token to simplify the initial download of the model
 
 ## How to start
 

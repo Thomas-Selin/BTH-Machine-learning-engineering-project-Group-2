@@ -1,42 +1,33 @@
-from langchain_community.llms import Ollama
-import streamlit as st
+import gradio as gradio
 import os
-
-from rag_engine import similarity_search
-
+from huggingface_hub import AsyncInferenceClient
+from rag_engine import similarity_search, process_documents
 
 os.write(1,b'Loading LLM.\n')
 
-llm = Ollama(model="phi", base_url="http://model:11434", verbose=True)
+vertical_list = process_documents()
+os.write(1,b'INFO :::::: Step 3-1\n')
+tgi_client = AsyncInferenceClient(model='http://model:80')
+os.write(1,b'INFO :::::: Step 3-1-1\n')
 
-os.write(1,b'FINISHED (Loading LLM).\n')
+async def inference(message, history):
+    os.write(1,b'INFO :::::: xxxxxxx3-2-1\n')
+    content=similarity_search(message, 1)
+    os.write(1,b'INFO :::::: Step 3-2-1\n')
+    message = content + " " + message 
+    partial_message = ""
+    os.write(1,b'INFO :::::: Step 3-2-2\n')
+    async for token in await tgi_client.text_generation(message, max_new_tokens=2000, stream=True):
+        partial_message += token
+        os.write(1,b'INFO :::::: Step 3-2-3\n')
+        yield partial_message
 
-content=similarity_search("asd", 1)
+os.write(1,b'INFO :::::: Step 4-1-1\n')
 
-
-def sendPrompt(prompt):
-    global llm
-    response = llm.invoke(prompt)
-    return response
-
-st.title("Chatbot")
-if "messages" not in st.session_state.keys(): 
-    st.session_state.messages = [
-        {"role": "assistant", "content": "Hi, I am here to answer your questions."}
-    ]
-
-if prompt := st.chat_input("Your question"): 
-    st.session_state.messages.append({"role": "user", "content": prompt})
-
-for message in st.session_state.messages: 
-    with st.chat_message(message["role"]):
-        st.write(message["content"])
-        
-if st.session_state.messages[-1]["role"] != "assistant":
-    with st.chat_message("assistant"):
-        with st.spinner("Thinking..."):
-            response = sendPrompt(prompt)
-            print(response)
-            st.write(response)
-            message = {"role": "assistant", "content": response}
-            st.session_state.messages.append(message)
+tgi_chatbot = gradio.ChatInterface(
+    inference,
+    chatbot=gradio.Chatbot(height=550, placeholder="Hello, you can now ask questions about the following documents: \n" + vertical_list),
+    textbox=gradio.Textbox(placeholder="Ask your question here!", container=False, scale=7),
+    retry_btn="Retry",
+    clear_btn="Clear",
+).queue().launch(debug=True, show_api=True)
