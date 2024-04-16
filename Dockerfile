@@ -6,10 +6,12 @@ WORKDIR /app
 # Copy the files
 COPY requirements.txt ./
 COPY app.py ./
+COPY rag_engine.py ./
+COPY documents/ ./documents/
 
 #install the dependecies
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-EXPOSE 8501
-ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+EXPOSE 7860
+ENTRYPOINT [ "python", "-u", "app.py" ]
