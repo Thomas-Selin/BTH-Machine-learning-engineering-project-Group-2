@@ -2,20 +2,22 @@ version: '1'
 services:
   model:
     container_name: model-container
-    image: tgi
+    image: ghcr.io/huggingface/text-generation-inference:1.4
     volumes:
       - ./data:/data
     ports:
       - 80:80
     environment:
-      # - HUGGINGFACE_OFFLINE=1
-      - HUGGINGFACE_TOKEN=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
+      - HUGGINGFACE_TOKEN=<your_huggingface_token>
     shm_size: '1gb'
-    command: ["--model-id", "bigscience/mt0-small", "--disable-custom-kernels", "--trust-remote-code"]
+    command: ["--model-id", "bigscience/mt0-small", "--disable-custom-kernels"]
   application:
     container_name: application-container
     image: application
     environment:
+      - CHUNK_SIZE=15
+      - CHUNK_OVERLAP=10
+      - MAX_NEW_TOKENS=10
       - GRADIO_SERVER_NAME=0.0.0.0
     ports:
       - 7860:7860

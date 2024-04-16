@@ -1,20 +1,9 @@
 # Test-APP - Group 2 ML @ BTH 
 
 This project has 3 parts:
-1. A container that serves the ML model. The container is created automatically from the publicly available ```xxxxxxxx``` image.
+1. A container that serves the ML model. The container is created automatically from the publicly available ```ghcr.io/huggingface/text-generation-inference:1.4``` image.
 2. ```app.py```: Code for an gradio application that provides a chatbot frontend for chatting with the ML model. This application is served in a separate container.
-3. ```rag-engine.py```: This code is a potential start for implementing RAG using the pdf documents in the ```documents``` folder. This code is as of now NOT used by the application, but can be tested by running the following commands outside of Docker:
-
-    ```
-    # You need python version 3 installed (preferably version 3.12.2)
-    python -m venv env
-    source env/bin/activate
-    pip install -r requirements.txt
-    python rag-engine.py
-    ```
-
-
-______ You need to provide a huggingface-token to simplify the initial download of the model
+3. ```rag-engine.py```: This code is implementing RAG by searching in the ```documents``` folder for the document that most relates to the users quesiton.
 
 ## How to start
 
@@ -28,23 +17,21 @@ ______ You need to provide a huggingface-token to simplify the initial download 
 docker build . -t application
 ```
 
-4. Start the servers.
+4. Provide a huggingface-token (HUGGINGFACE_TOKEN) in the docker-compose.yml file to simplify the initial download of the model. This requires a free huggingface account and an accesstoken with read permission.
+
+5. Start the servers.
 
 ```
 docker-compose up --detach
 ```
 
-5. Download and set up a model of your choice (that your hardware can handle). NOTE: this will download several gigabytes of data. In this example the model is named **phi**. You can find other models [here](https://ollama.com/library).
-
-```
-docker exec model-container ollama run phi
-```
+This downloads and sets up the model named **bigscience/mt0-small** (several gigabytes). This can take long time depending on your hardware. You can find information about other supported models [here](https://huggingface.co/docs/text-generation-inference/main/en/supported_models#supported-models).
 
 ## How to use the chatbot  <span id="HowToUse"><span>
 
-You can find the chatbot here: [http://localhost:8501](http://localhost:8501)
+You can find the chatbot here: [http://localhost:7860](http://localhost:7860)
 
-## How to develop
+## How to develop the code further
 
 To make changes to the code and start the servers with the new changes applied:
 1. ```docker compose down```
@@ -52,12 +39,6 @@ To make changes to the code and start the servers with the new changes applied:
 3. Make your code changes
 4. ```docker build . -t application```
 5. ```docker-compose up --detach```
-6. ```docker exec model-container ollama run phi```(Todo: the downloaded model should persisted to avoid downloading it several times)
-7. See [How to use](#HowToUse)
-8. If you are happy with your changes and want to share to the group, commit and push: ```git commit -am "<description of you code changes>"; git push --set-upstream origin <what you called your branch>```
-9. When pushing further code you can omit ```--set-upstream origin <what you called your branch>``` from the command above
-
-## Various non-essential information
-For various experimentation you can communicate directly with the Ollama API via [http://localhost:11434](http://localhost:11434) in the way described here: [Ollama API documentation](https://github.com/ollama/ollama/blob/main/docs/api.md)
-
-For more info about the server setup, see docker-compose.yml file.
+6. See [How to use](#HowToUse)
+7. If you are happy with your changes and want to share to the group, commit and push: ```git commit -am "<description of you code changes>"; git push --set-upstream origin <what you called your branch>```
+8. When pushing further code you can omit ```--set-upstream origin <what you called your branch>``` from the command above
