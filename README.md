@@ -18,7 +18,7 @@ This project has 3 parts:
 
 1. Clone this repo: ```git clone git@github.com:ttechstuff/group2-ML-app-v1.git; cd group2-ML-app-v1```
 
-2. Download and start [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+2. Download, install, and start [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
 3. Build the application image.
 

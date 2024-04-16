@@ -2,18 +2,22 @@ from langchain_community.llms import Ollama
 import streamlit as st
 import os
 
+from rag_engine import similarity_search
+
+
 os.write(1,b'Loading LLM.\n')
 
 llm = Ollama(model="phi", base_url="http://model:11434", verbose=True)
 
 os.write(1,b'FINISHED (Loading LLM).\n')
 
+content=similarity_search("asd", 1)
+
+
 def sendPrompt(prompt):
     global llm
     response = llm.invoke(prompt)
     return response
-
-
 
 st.title("Chatbot")
 if "messages" not in st.session_state.keys(): 
