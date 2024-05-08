@@ -5,3 +5,6 @@ pypdf
 langchain_openai
 chromadb
 sentence-transformers
+PyMuPDF
+unstructured
+markdown

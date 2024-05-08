@@ -1,5 +1,6 @@
 import os
-from langchain_community.document_loaders import PyPDFDirectoryLoader
+from langchain_community.document_loaders import PyMuPDFLoader
+from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
@@ -11,12 +12,7 @@ chunk_overlap = int(os.environ.get('CHUNK_OVERLAP', '20'))
 db = None
 
 def process_documents():
-    os.write(1,b'INFO ::: Starting to process documents\n')
-    pdf_folder_path = "./documents/"
-    loader = PyPDFDirectoryLoader(pdf_folder_path)
-    data = loader.load()
-    # print(f'Data: {data}')
-    # text_splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+    document_folder_path = "./documents/"
     text_splitter = CharacterTextSplitter(
         separator=".",
         chunk_size=chunk_size,
@@ -24,15 +20,26 @@ def process_documents():
         length_function=len,
         is_separator_regex=False,
     )
-    documents = text_splitter.split_documents(data)
+    docs = []
+    filenames = []
+    global db
+    for root, dirs, files in os.walk(document_folder_path):
+        for name in files:
+            if name.endswith((".pdf")):
+                loader = PyMuPDFLoader(os.path.join(root, name))
+            elif name.endswith((".md")):
+                loader = UnstructuredMarkdownLoader(os.path.join(root, name))
+            else:
+                continue
+            docs.extend(loader.load())
+            filenames += name
 
-    filenames = [doc.metadata['source'].split('/')[-1] for doc in data]
+    documents = text_splitter.split_documents(docs)
     vertical_list = '\n'.join(filenames)
-
+        
     os.write(1,f'INFO ::: The following documents were loaded: \n{vertical_list}\n'.encode())
     embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
     
-    global db
     db = Chroma.from_documents(documents, embedding_function)
     return vertical_list
  
