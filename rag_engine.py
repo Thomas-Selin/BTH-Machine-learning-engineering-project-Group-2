@@ -1,9 +1,10 @@
 import os
-from langchain_community.document_loaders import PyPDFDirectoryLoader
-from langchain.text_splitter import CharacterTextSplitter
+from langchain_community.document_loaders import PyMuPDFLoader
+from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
-# from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import SpacyTextSplitter
+
 
 chunk_size = int(os.environ.get('CHUNK_SIZE', '200'))
 chunk_overlap = int(os.environ.get('CHUNK_OVERLAP', '20'))
@@ -11,22 +12,23 @@ chunk_overlap = int(os.environ.get('CHUNK_OVERLAP', '20'))
 db = None
 
 def process_documents():
-    os.write(1,b'INFO ::: Starting to process documents\n')
-    pdf_folder_path = "./documents/"
-    loader = PyPDFDirectoryLoader(pdf_folder_path)
-    data = loader.load()
-    # print(f'Data: {data}')
-    # text_splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-    text_splitter = CharacterTextSplitter(
-        separator=".",
-        chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap,
-        length_function=len,
-        is_separator_regex=False,
-    )
-    documents = text_splitter.split_documents(data)
-
-    filenames = [doc.metadata['source'].split('/')[-1] for doc in data]
+    document_folder_path = "./documents/"
+    text_splitter = SpacyTextSplitter(chunk_size=1000)
+    docs = []
+    filenames = []
+    global db
+    for root, dir, files in os.walk(document_folder_path):
+        for name in files:
+            if name.endswith((".pdf")):
+                loader = PyMuPDFLoader(os.path.join(root, name))
+            elif name.endswith((".md")):
+                loader = UnstructuredMarkdownLoader(os.path.join(root, name))
+            else:
+                continue
+            docs.extend(loader.load())
+            filenames += name
+    documents = text_splitter.split_documents(docs)
+    filenames = [doc.metadata['source'].split('/')[-1] for doc in docs]
     vertical_list = '\n'.join(filenames)
 
     os.write(1,f'INFO ::: The following documents were loaded: \n{vertical_list}\n'.encode())
