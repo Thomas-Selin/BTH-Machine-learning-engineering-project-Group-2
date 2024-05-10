@@ -10,7 +10,7 @@ services:
     environment:
       - HUGGINGFACE_TOKEN=<your_huggingface_token>
     shm_size: '1gb'
-    command: ["--model-id", "microsoft/phi-2", "--disable-custom-kernels"]
+    command: ["--model-id", "stabilityai/stablelm-2-zephyr-1_6b", "--disable-custom-kernels"]
     # command: ["--model-id", "microsoft/phi-2", "--max-batch-prefill-tokens", "2048"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost"]
