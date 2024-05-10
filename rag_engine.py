@@ -44,5 +44,5 @@ def similarity_search(query, k=1):
 
     source = docs[0].metadata['source']
     content = docs[0].page_content
-    os.write(1, f'INFO ::: The document: "{source}" was found to be most similair.\n'.encode())
+    os.write(1, f'INFO ::: The document: "{source}" was found to be most similar.\n'.encode())
     return source, content

@@ -1,20 +1,20 @@
-version: '1'
 services:
   model:
     container_name: model-container
     image: ghcr.io/huggingface/text-generation-inference:1.4.5
+    platform: linux/amd64
     volumes:
       - ./data:/data
     ports:
       - 80:80
     environment:
-      - HUGGINGFACE_TOKEN=<your_huggingface_token>
+      - HUGGING_FACE_HUB_TOKEN=<your_huggingface_token>
     shm_size: '1gb'
-    command: ["--model-id", "microsoft/phi-2", "--disable-custom-kernels"]
+    command: ["--model-id", "stabilityai/stablelm-2-zephyr-1_6b", "--disable-custom-kernels"]
     # command: ["--model-id", "microsoft/phi-2", "--max-batch-prefill-tokens", "2048"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost"]
-      interval: 1m30s
+      interval: 1m
       timeout: 10s
       retries: 20
       start_period: 40s

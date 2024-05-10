@@ -1,4 +1,4 @@
-ca.crt
 data/
 env/
 __pycache__/
+temp/
