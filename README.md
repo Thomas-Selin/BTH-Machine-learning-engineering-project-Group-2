@@ -1,11 +1,19 @@
-# Test-APP - Group 2 ML @ BTH 
+# RAG Chat Bot - Group 2 Machine learning engineering @ BTH 
 
-This project has 3 parts:
-1. A container that serves the ML model. The container is created automatically from the publicly available ```ghcr.io/huggingface/text-generation-inference:1.4``` image.
-2. ```app.py```: Code for an gradio application that provides a chatbot frontend for chatting with the ML model. This application is served in a separate container.
-3. ```rag-engine.py```: This code is implementing RAG by searching in the ```documents``` folder for the document that most relates to the users quesiton.
+This project has 3 main parts:
+1. A server that serves the language model. The server uses the ```ghcr.io/huggingface/text-generation-inference:1.4``` image.
+2. ```app.py```: Code for an gradio application that provides a chatbot frontend for chatting with the language model. ```app.py``` also connects to the language model and the logic in ```rag_engine.py```.
+3. ```rag-engine.py```: This code is implementing RAG by searching thru the ```documents``` folder for the content that most relates to the users quesiton. Chunks of text in the most related document is being provided to the languange-model together with the users question.
 
-## How to start
+## Choosing the language-model to run
+
+Using our set up, you can decide between many different kinds of language-models. Specified as the default model (in the docker-compose.yml file) is **stabilityai/stablelm-2-zephyr-1_6b** which is a small model that can be run on many PC:s and Mac:s. If you have problems getting the model-server to run with this model, you can use the even smaller **bigscience/mt0-small** model, but the quality of the chatbots answers will be unimpressive. 
+
+If your computer has more resources, we recommend that you test the **microsoft/phi-2** model for improved chatbot answer quality.
+
+You can find information about other supported models [here](https://huggingface.co/docs/text-generation-inference/main/en/supported_models#supported-models), although you can run many other models as well, but they are not offically supported by the Text Generation Inference framework.
+
+## How to start the chatbot
 
 1. Clone this repo: ```git clone git@github.com:ttechstuff/group2-ML-app-v1.git; cd group2-ML-app-v1```
 
@@ -17,7 +25,7 @@ This project has 3 parts:
 docker build . -t application
 ```
 
-4. Provide a huggingface-token (HUGGINGFACE_TOKEN) in the docker-compose.yml file to simplify the initial download of the model. This requires a free huggingface account and an accesstoken with read permission.
+4. NORMALLY NOT NECESSARY: Some hugging-face models can only be downloaded if you provide a HUGGING_FACE_HUB_TOKEN with read permission. This requires a free huggingface account. You can provide the HUGGING_FACE_HUB_TOKEN in the docker-compose.yml file.
 
 5. Start the servers.
 
@@ -25,9 +33,9 @@ docker build . -t application
 docker-compose up --detach
 ```
 
-This downloads and sets up the model named **bigscience/mt0-small** (several gigabytes). This can take long time depending on your hardware. You can find information about other supported models [here](https://huggingface.co/docs/text-generation-inference/main/en/supported_models#supported-models).
+As the servers starts, the language model will be downloaded (if not already downloaded) and set up. This can take long time depending on your hardware, internet speed and choice of model.
 
-## How to use the chatbot  <span id="HowToUse"><span>
+## How to use the chatbot
 
 You can find the chatbot here: [http://localhost:7860](http://localhost:7860)
 
@@ -39,6 +47,6 @@ To make changes to the code and start the servers with the new changes applied:
 3. Make your code changes
 4. ```docker build . -t application```
 5. ```docker-compose up --detach```
-6. See [How to use](#HowToUse)
+6. See "How to use the chatbot" section above
 7. If you are happy with your changes and want to share to the group, commit and push: ```git commit -am "<description of you code changes>"; git push --set-upstream origin <what you called your branch>```
 8. When pushing further code you can omit ```--set-upstream origin <what you called your branch>``` from the command above

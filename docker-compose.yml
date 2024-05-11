@@ -1,26 +1,44 @@
-version: '1'
 services:
   model:
     container_name: model-container
-    image: ghcr.io/huggingface/text-generation-inference:1.4
+    image: ghcr.io/huggingface/text-generation-inference:1.4.5
+    platform: linux/amd64
     volumes:
       - ./data:/data
     ports:
       - 80:80
     environment:
-      - HUGGINGFACE_TOKEN=<your_huggingface_token>
+      - HUGGING_FACE_HUB_TOKEN=<your_huggingface_token>
     shm_size: '1gb'
-    command: ["--model-id", "bigscience/mt0-small", "--disable-custom-kernels"]
+    command: ["--model-id", "stabilityai/stablelm-2-zephyr-1_6b", "--disable-custom-kernels"]
+    # command: ["--model-id", "microsoft/phi-2", "--max-batch-prefill-tokens", "2048"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 1m
+      timeout: 10s
+      retries: 20
+      start_period: 40s
+      start_interval: 5s
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
   application:
     container_name: application-container
     image: application
     environment:
-      - CHUNK_SIZE=15
-      - CHUNK_OVERLAP=10
-      - MAX_NEW_TOKENS=10
+      - CHUNK_SIZE=500
+      - CHUNK_OVERLAP=50
+      - MAX_NEW_TOKENS=600
       - GRADIO_SERVER_NAME=0.0.0.0
     ports:
       - 7860:7860
-  
+    depends_on:
+      model:
+        condition: service_healthy
+        restart: false
 volumes:
   data:
