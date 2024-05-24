@@ -12,7 +12,7 @@ chunk_overlap = int(os.environ.get('CHUNK_OVERLAP', '20'))
 db = None
 
 def process_documents():
-    document_folder_path = "./documents/"
+    document_folder_path = "documents/"
     text_splitter = SpacyTextSplitter(chunk_size=1000)
     docs = []
     filenames = []

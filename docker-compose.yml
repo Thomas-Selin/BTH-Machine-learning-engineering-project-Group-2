@@ -29,9 +29,11 @@ services:
   application:
     container_name: application-container
     image: application
+    volumes:
+      - ./documents:/app/documents
     environment:
-      - CHUNK_SIZE=500
-      - CHUNK_OVERLAP=50
+      - CHUNK_SIZE=350
+      - CHUNK_OVERLAP=80
       - MAX_NEW_TOKENS=600
       - GRADIO_SERVER_NAME=0.0.0.0
     ports:

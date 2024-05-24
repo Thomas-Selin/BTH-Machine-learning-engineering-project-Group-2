@@ -5,7 +5,6 @@ WORKDIR /app
 COPY requirements.txt ./
 COPY app.py ./
 COPY rag_engine.py ./
-COPY documents/ ./documents/
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
