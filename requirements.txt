@@ -1,10 +1,8 @@
-gradio
-langchain
-langchain-community
-pypdf
-chromadb
-sentence-transformers
-PyMuPDF
-unstructured
-markdown
 en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl
+numpy
+gradio==4.32.0
+langchain-community
+spacy
+pymupdf
+sentence-transformers
+chromadb

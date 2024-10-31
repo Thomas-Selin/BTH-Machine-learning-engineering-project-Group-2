@@ -3,13 +3,13 @@
 This project has 4 main parts:
 1. A server that serves the language model. The server uses the ```ghcr.io/huggingface/text-generation-inference:1.4``` image.
 2. ```app.py```: Code for an gradio application that provides a chatbot frontend for chatting with the language model. ```app.py``` also connects to the language model and the logic in ```rag_engine.py```.
-3. ```rag-engine.py```: This code is implementing RAG. Documents in the ```documents``` folder (either in PDF or Markdown format) are preprocessed and split into chunks and stored in a vector database. When a question is asked to the chatbot, logic is triggered that searches thru the data for the content that most relates to the users quesiton. This is done by a geometric mathematical algorithm using the chunk vectors. Chunks of text in the most related document is being provided to the languange-model together with the users question. Reference to which document was used as context is being provided to the chatbot frontend.
+3. ```rag-engine.py```: This code implements RAG. Documents in the ```documents``` folder (either in PDF or Markdown format) are preprocessed and split into chunks and stored in a vector database. When a question is asked to the chatbot, logic is triggered that searches through the data for the content that most relates to the users question. This is done by a geometric mathematical algorithm using the chunk vectors. Chunks of text in the most related document is being provided to the language model together with the users question. Reference to which document was used as context is being provided to the chatbot frontend.
 4. Vector database, used to store the the vectorized text chunks and for finding the vectors that to the highest degree relates to the users question.
    
 
-## Choosing the language-model to run
+## Choosing the language model to run
 
-Using our set up, you can decide between many different kinds of language-models. Specified as the default model (in the docker-compose.yml file) is **stabilityai/stablelm-2-zephyr-1_6b** which is a small model that can be run on many PC:s and Mac:s. If you have problems getting the model-server to run with this model, you can use the even smaller **bigscience/mt0-small** model, but the quality of the chatbots answers will be unimpressive. 
+Using our set up, you can decide between many different kinds of language models. Specified as the default model (in the docker-compose.yml file) is **stabilityai/stablelm-2-zephyr-1_6b** which is a small model that can be run on many PC:s and Mac:s. If you have problems getting the model-server to run with this model, you can use the even smaller **bigscience/mt0-small** model, but the quality of the chatbots answers will be unimpressive. 
 
 If your computer has more resources, we recommend that you test the **microsoft/phi-2** model for improved chatbot answer quality.
 
