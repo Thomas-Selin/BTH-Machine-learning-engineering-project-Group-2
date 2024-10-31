@@ -1,5 +1,7 @@
 # RAG Chat Bot - Group 2 Machine learning engineering @ BTH 
 
+This project has been a part of the university course Machine learning engineering at Blekinge Institute of Technology during 2024.
+
 This project has 4 main parts:
 1. A server that serves the language model. The server uses the ```ghcr.io/huggingface/text-generation-inference:1.4``` image.
 2. ```app.py```: Code for an gradio application that provides a chatbot frontend for chatting with the language model. ```app.py``` also connects to the language model and the logic in ```rag_engine.py```.
