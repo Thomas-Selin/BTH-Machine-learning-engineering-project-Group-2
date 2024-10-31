@@ -1,5 +1,7 @@
 # RAG Chat Bot - Group 2 Machine learning engineering @ BTH 
 
+The project report for this project can be found in the file [Project Report](Project_report.pdf).
+
 This project has been a part of the university course Machine learning engineering at Blekinge Institute of Technology during 2024.
 
 This project has 4 main parts:
